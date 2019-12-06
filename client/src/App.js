@@ -1,26 +1,32 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react'
+import './App.css'
+import axios from 'axios'
+import PlayersList from './components/PlayersList'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+   constructor(p) {
+       super(p);
+       this.state = {
+           playerData: [],
+           url: 'http://localhost:5000/api/players'
+       }
+   }
+   componentDidMount() {
+      axios
+          .get(this.state.url)
+          .then(r =>{
+          this.setState({playerData: r.data})
+              console.log(this.state.playerData)
+          })
+    }
+
+   render() {
+       return (
+           <div className = "App" >
+               <h1>Women's World Cup Players</h1>
+               {this.state.playerData ? <PlayersList data={this.state.playerData} /> : null}
+           </div>
+       )}
 }
 
 export default App;
